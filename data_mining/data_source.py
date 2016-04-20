@@ -1,3 +1,4 @@
+import cPickle as pickle
 
 
 class RemoteDataSource(object):
@@ -8,8 +9,14 @@ class RemoteDataSource(object):
 class LocalDataSource(object):
 
     @staticmethod
+    def get_feature_list(source_file):
+        try:
+            return pickle.load(open(source_file, 'rb'))
+        except:
+            raise Exception("Local data source error during initialization!")
+
+    @staticmethod
     def get_distance_object(source_file):
-        import cPickle as pickle
         from .feature_object import DistanceObject
         from data_mining.configuration import Definition
         try:
