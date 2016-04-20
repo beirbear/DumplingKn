@@ -14,6 +14,8 @@ class ProcessingMethod(object):
         # Standard function region -------------------------------------------------------------------------------------
         import numpy
         import numpy as np
+        import sklearn.preprocessing
+        import sklearn
 
         def replace_nan(X):
             """ Replaces NaN values with the feature (column) mean. If the feature column also contains an odd number of +-Inf the mean
