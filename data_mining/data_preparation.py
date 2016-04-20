@@ -4,7 +4,7 @@ class ProcessingMethod(object):
     """
 
     @staticmethod
-    def fit_threshold(features):
+    def fit_threshold(ret):
         """
         1. Normalization
         2. Find fit threshold
@@ -13,6 +13,35 @@ class ProcessingMethod(object):
         """
         # Standard function region -------------------------------------------------------------------------------------
         import numpy
+        import numpy as np
+
+        def replace_nan(X):
+            """ Replaces NaN values with the feature (column) mean. If the feature column also contains an odd number of +-Inf the mean
+            will become +-Inf. This is ok for now since we will replace those values when rescale the data. """
+            X = np.asarray(X)
+            nans = []
+            for c, v in enumerate(X):
+                for p, a in enumerate(v):
+                    if numpy.isnan(a):
+                        nans.append((c, p))
+            for es, f in nans:
+                m = np.mean(np.nan_to_num(X[:, f]))
+                X[es, f] = m
+            return X
+
+        features = []
+
+        for n, pp in enumerate(ret):
+            f_set = []
+            for r, es in enumerate(pp.result):
+                f_set.append(es['features'])
+
+            f_set = replace_nan(f_set)  # repalce NaNs with mean
+            # f_set = np.nan_to_num(f_set)
+            mm_scale = sklearn.preprocessing.MinMaxScaler()  # scale the data, thiswill remove +-inf
+            f_set = mm_scale.fit_transform(f_set)
+            m = np.mean(f_set, axis=0)
+            features.append(m)
 
         def normalize(data):
             std_d = numpy.std(data, axis=0)
