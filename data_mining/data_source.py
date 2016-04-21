@@ -1,9 +1,46 @@
 import cPickle as pickle
+import urllib2
+import time
+from configuration import Definition
 
 
 class RemoteDataSource(object):
     def __init__(self):
-        pass
+        """
+        Test connection by get total record in the data repository
+        """
+        req = Definition.RemoteSource.get_string_total_records()
+        self.__total_record = self.__get_data(req)
+
+    @property
+    def check_total_record(self):
+        return self.__total_record
+
+    # Internal Service Class ------------------------------------------------
+    def __get_data(self, request_url):
+        data = None
+
+        def send_data_to_repo(request_url):
+            req = urllib2.Request(request_url)
+            response = urllib2.urlopen(req)
+
+            if response.code == 200:
+                data = response.read()
+            else:
+                return None
+
+            return data
+
+        is_repeat = True
+        while is_repeat:
+            data = send_data_to_repo(request_url)
+            if data:
+                is_repeat = False
+            else:
+                time.sleep(5)
+
+        return data
+    # Internal Service Class --------------------------------------------------
 
 
 class LocalDataSource(object):
