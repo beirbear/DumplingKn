@@ -11,10 +11,30 @@ class RemoteDataSource(object):
         """
         req = Definition.RemoteSource.get_string_total_records()
         self.__total_record = self.__get_data(req)
+        self.__id_link = None
 
     @property
-    def check_total_record(self):
+    def get_total_record(self):
         return self.__total_record
+
+    @property
+    def get_all_features(self):
+        req = Definition.RemoteSource.get_string_all_features()
+        tmp = eval(self.__get_data(req))
+        # Convert dict into list and store the id with index
+        self.__id_link = list()
+        data_list = []
+
+        for key, value in tmp:
+            data_list += value
+            self.__id_link.append(key)
+
+        return data_list
+
+    @property
+    def get_id_link(self):
+        return self.__id_link
+
 
     # Internal Service Class ------------------------------------------------
     def __get_data(self, request_url):
