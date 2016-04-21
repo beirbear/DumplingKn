@@ -57,14 +57,14 @@ class Definition(object):
     class RemoteSource(object):
         @staticmethod
         def get_string_total_records():
-            return '{0}:{1}/dataRepository?token={2}&command=count'.format(
+            return 'http://{0}:{1}/dataRepository?token={2}&command=count'.format(
                     Setting.RemoteSource.get_remote_address(),
                     Setting.RemoteSource.get_remote_port(),
                     Setting.RemoteSource.get_token())
 
         @staticmethod
         def get_string_all_features():
-            return '{0}:{1}/dataRepository?token={2}&command=get_features'.format(
+            return 'http://{0}:{1}/dataRepository?token={2}&command=get_features'.format(
                     Setting.RemoteSource.get_remote_address(),
                     Setting.RemoteSource.get_remote_port(),
                     Setting.RemoteSource.get_token())
