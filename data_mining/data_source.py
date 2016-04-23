@@ -24,13 +24,17 @@ class RemoteDataSource(object):
         """
         Test connection by get total record in the data repository
         """
-        req = Definition.RemoteSource.get_string_total_records()
-        self.__total_record = self.__get_data(req)
+        self.__total_record = None
         self.__id_link = None
+        self.__update_total_record()
 
     @property
     def get_total_record(self):
         return self.__total_record
+
+    def __update_total_record(self):
+        req = Definition.RemoteSource.get_string_total_records()
+        self.__total_record = self.__get_data(req)
 
     def get_all_features(self):
         req = Definition.RemoteSource.get_string_all_features()
@@ -43,10 +47,13 @@ class RemoteDataSource(object):
         # use "tar" as a regular TarFile object
         for member in tar.getnames():
             # print("member", member)
-            self.__id_link.append(ntpath.basename(member.replace(Definition.DataSource.get_string_all_feature_extension(), '')))
             f = tar.extractfile(member).read()
             g = zlib.decompress(f)
             data_list += pickle.loads(g)
+            self.__id_link.append(
+                ntpath.basename(member.replace(Definition.DataSource.get_string_all_feature_extension(), '')))
+
+        self.__total_record = len(data_list)
 
         return data_list
 
