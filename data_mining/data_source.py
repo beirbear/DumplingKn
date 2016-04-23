@@ -49,7 +49,7 @@ class RemoteDataSource(object):
             # print("member", member)
             f = tar.extractfile(member).read()
             g = zlib.decompress(f)
-            data_list += pickle.loads(g)
+            data_list.append(pickle.loads(g))
             self.__id_link.append(
                 ntpath.basename(member.replace(Definition.DataSource.get_string_all_feature_extension(), '')))
 
