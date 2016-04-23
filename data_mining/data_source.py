@@ -5,6 +5,7 @@ from configuration import Definition
 import tarfile
 import io
 import zlib
+import ntpath
 
 class ParameterSweepResult():
     """ Result object to encapsulate the results of a parameter sweep at a particular parameter point along with the parameters used to compute it.
@@ -34,25 +35,18 @@ class RemoteDataSource(object):
     def get_all_features(self):
         req = Definition.RemoteSource.get_string_all_features()
         tmp = self.__get_data(req)
-
-        # Extract tar and get the content
         file_like_object = io.BytesIO(tmp)
         tar = tarfile.open(fileobj=file_like_object)
-        # use "tar" as a regular TarFile object
-        for member in tar.getmembers():
-            f = tar.extractfile(member)
-            g = zlib.decompress(f)
-            c = pickle.loads(g)
-            print(str(c))
-
-        # Convert dict into list and store the id with index
         self.__id_link = list()
         data_list = []
 
-        for key in tmp:
-
-            data_list += eval(tmp[key])
-            self.__id_link.append(key)
+        # use "tar" as a regular TarFile object
+        for member in tar.getnames():
+            # print("member", member)
+            self.__id_link.append(ntpath.basename(member.replace(Definition.DataSource.get_string_all_feature_extension(), '')))
+            f = tar.extractfile(member).read()
+            g = zlib.decompress(f)
+            data_list += pickle.loads(g)
 
         return data_list
 

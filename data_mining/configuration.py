@@ -54,6 +54,10 @@ class Definition(object):
         def get_string_row_index():
             return 'index'
 
+        @staticmethod
+        def get_string_all_feature_extension():
+            return '.p.zip'
+
     class RemoteSource(object):
         @staticmethod
         def get_string_total_records():
