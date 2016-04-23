@@ -4,6 +4,7 @@ import time
 from configuration import Definition
 import tarfile
 import io
+import zlib
 
 class ParameterSweepResult():
     """ Result object to encapsulate the results of a parameter sweep at a particular parameter point along with the parameters used to compute it.
@@ -40,7 +41,8 @@ class RemoteDataSource(object):
         # use "tar" as a regular TarFile object
         for member in tar.getmembers():
             f = tar.extractfile(member)
-            c = pickle.loads(f)
+            g = zlib.decompress(f)
+            c = pickle.loads(g)
             print(str(c))
 
         # Convert dict into list and store the id with index
