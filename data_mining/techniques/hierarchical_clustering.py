@@ -209,6 +209,12 @@ class HeatMap(object):
         # print ('label', label, 'sample_list',  sample_list)
         return self.__get_human_label(label)
 
+    def map_file_index(self, file_index):
+        tmp = str(self.__tree_root_structure).replace('.0', '')
+        for i, item in enumerate(file_index):
+            tmp = tmp.replace(i, item)
+        return tmp
+
     # Service Method ---------------------------------------------------------------------------------------------------
 
     def __get_human_label_from_int(self, list_label):

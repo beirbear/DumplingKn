@@ -12,7 +12,8 @@ if __name__ == '__main__':
     print ("Total Records", source_object.get_total_record)
     fit_object = ProcessingMethod.fit_threshold(source_object.get_all_features())
     heat_map = HeatMap(fit_object)
-    print heat_map.get_all_labels()
+    print heat_map.map_file_index(source_object.get_id_link)
+    # print heat_map.get_all_labels()
     print ("id_link", source_object.get_id_link)
 
     """
