@@ -6,6 +6,7 @@ import tarfile
 import io
 import zlib
 import ntpath
+import json
 
 
 class ParameterSweepResult():
@@ -71,7 +72,7 @@ class RemoteDataSource(object):
         url = Definition.RemoteSource.get_string_push_data(command)
 
         def send_data_to_repo():
-            request = urllib2.Request(url, data=content)
+            request = urllib2.Request(url, data=json.dumps(content))
 
             request.add_header("Content-Type", 'application/json')
             request.get_method = lambda: method
