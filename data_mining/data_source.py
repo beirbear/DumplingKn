@@ -7,6 +7,7 @@ import io
 import zlib
 import ntpath
 
+
 class ParameterSweepResult():
     """ Result object to encapsulate the results of a parameter sweep at a particular parameter point along with the parameters used to compute it.
 
@@ -18,6 +19,7 @@ class ParameterSweepResult():
 
     def __str__(self):
         return "{0} => {1}".format(self.parameters, self.result)
+
 
 class RemoteDataSource(object):
     def __init__(self):
@@ -60,6 +62,33 @@ class RemoteDataSource(object):
     @property
     def get_id_link(self):
         return self.__id_link
+
+    def push_to_data_repo(self, command, content):
+        method = "POST"
+        handler = urllib2.HTTPHandler()
+        opener = urllib2.build_opener(handler)
+
+        url = Definition.RemoteSource.get_string_push_data(command)
+
+        def send_data_to_repo():
+            request = urllib2.Request(url, data=content)
+
+            request.add_header("Content-Type", 'application/json')
+            request.get_method = lambda: method
+
+            try:
+                connection = opener.open(request)
+            except urllib2.HTTPError, e:
+                connection = e
+
+            if connection.code == 200:
+                return True
+
+            return False
+
+        import time
+        while not send_data_to_repo():
+            time.sleep(5)
 
 
     # Internal Service Class ------------------------------------------------

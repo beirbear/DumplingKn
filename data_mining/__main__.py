@@ -2,7 +2,7 @@ from .techniques.hierarchical_clustering import HeatMap
 # from .data_source import LocalDataSource
 from .data_source import RemoteDataSource
 from .data_preparation import ProcessingMethod
-from .configuration import Setting
+from .configuration import Setting, Definition
 
 SOURCE_FILE = '/home/ubuntu/lab/test.p'
 
@@ -12,9 +12,16 @@ if __name__ == '__main__':
     print ("Total Records", source_object.get_total_record)
     fit_object = ProcessingMethod.fit_threshold(source_object.get_all_features())
     heat_map = HeatMap(fit_object)
-    print heat_map.map_file_index(source_object.get_id_link)
-    # print heat_map.get_all_labels()
-    print ("id_link", source_object.get_id_link)
+
+    # Push linkage matrix back
+    source_object.push_to_data_repo(Definition.RemoteSource.get_string_push_linkage_matrix(),
+                                    fit_object.linkage_matrix)
+    # Push row_index back
+    source_object.push_to_data_repo(Definition.RemoteSource.get_string_push_row_index(),
+                                    source_object.get_id_link)
+    # Push label_tree back
+    source_object.push_to_data_repo(Definition.RemoteSource.get_string_push_label_tree(),
+                                    heat_map.get_all_labels())
 
     """
     source_object = LocalDataSource.get_feature_list(SOURCE_FILE)

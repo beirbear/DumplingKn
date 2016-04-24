@@ -72,3 +72,27 @@ class Definition(object):
                     Setting.RemoteSource.get_remote_address(),
                     Setting.RemoteSource.get_remote_port(),
                     Setting.RemoteSource.get_token())
+
+        @staticmethod
+        def get_string_push_data(command):
+            return 'http://{0}:{1}/dataLabels?token={2}&command={3}'.format(
+                Setting.RemoteSource.get_remote_address(),
+                Setting.RemoteSource.get_remote_port(),
+                Setting.RemoteSource.get_token(),
+                command)
+
+        @staticmethod
+        def get_string_command():
+            return 'command'
+
+        @staticmethod
+        def get_string_push_linkage_matrix():
+            return 'linkage_matrix'
+
+        @staticmethod
+        def get_string_push_label_tree():
+            return 'labeled_tree'
+
+        @staticmethod
+        def get_string_push_row_index():
+            return 'row_index'
