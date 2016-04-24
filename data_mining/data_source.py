@@ -104,7 +104,7 @@ class RemoteDataSource(object):
             except urllib2.HTTPError, e:
                 connection = e
 
-            if connection.code == 200:
+            if connection.code == Definition.DataSource.get_success_return_code():
                 return True
 
             return False

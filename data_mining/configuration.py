@@ -58,6 +58,10 @@ class Definition(object):
         def get_string_all_feature_extension():
             return '.p.zip'
 
+        @staticmethod
+        def get_success_return_code():
+            return 200
+
     class RemoteSource(object):
         @staticmethod
         def get_string_total_records():
