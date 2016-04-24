@@ -7,7 +7,7 @@ import io
 import zlib
 import ntpath
 import json
-
+import numpy
 
 class ParameterSweepResult():
     """ Result object to encapsulate the results of a parameter sweep at a particular parameter point along with the parameters used to compute it.
@@ -72,7 +72,10 @@ class RemoteDataSource(object):
         url = Definition.RemoteSource.get_string_push_data(command)
 
         def send_data_to_repo():
-            request = urllib2.Request(url, data=json.dumps(content))
+            if isinstance(content, numpy.ndarray):
+                request = urllib2.Request(url, data=json.dumps(content.tolist()))
+            else:
+                request = urllib2.Request(url, data=json.dumps(content))
 
             request.add_header("Content-Type", 'application/json')
             request.get_method = lambda: method
