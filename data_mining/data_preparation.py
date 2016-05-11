@@ -35,7 +35,7 @@ class ProcessingMethod(object):
 
         for n, pp in enumerate(ret):
             f_set = []
-            for r, es in enumerate(pp.result):
+            for r, es in enumerate(pp):
                 f_set.append(es['features'])
 
             f_set = replace_nan(f_set)  # repalce NaNs with mean

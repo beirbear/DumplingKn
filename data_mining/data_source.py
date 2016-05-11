@@ -119,7 +119,7 @@ class RemoteDataSource(object):
         Internal function for update total records.
         """
         req = Definition.RemoteSource.get_string_total_records()
-        self.__total_record = int(self.__get_data(req).replace("Total records:"))
+        self.__total_record = int(self.__get_data(req).replace("Total records:", ""))
 
     def __get_data(self, request_url):
         """
