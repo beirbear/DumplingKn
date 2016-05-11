@@ -17,7 +17,7 @@ if __name__ == '__main__':
     while True:
         source_object = RemoteDataSource()
 
-        if isinstance(source_object.total_record, str):
+        if source_object.total_record == 0:
             print "No data... skip"
             time.sleep(60)
             continue
