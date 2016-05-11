@@ -12,11 +12,13 @@ if __name__ == '__main__':
 
     # Read configuration from file
     Setting.read_configuration_from_file()
+    counter = 0
 
     while True:
         source_object = RemoteDataSource()
 
         if isinstance(source_object.total_record, str):
+            print "No data... skip"
             time.sleep(60)
             continue
 
@@ -40,6 +42,9 @@ if __name__ == '__main__':
         # Push label_tree back
         source_object.push_to_data_repo(Definition.RemoteSource.get_string_push_label_tree(),
                                         heat_map.get_all_labels())
+
+        counter += 1
+        print "Finish iteration, ", str(counter)
 
         if source_object.total_record == 1000:
             break
