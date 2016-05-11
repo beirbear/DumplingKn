@@ -16,6 +16,10 @@ if __name__ == '__main__':
     while True:
         source_object = RemoteDataSource()
 
+        if source_object.total_record == 0:
+            time.sleep(60)
+            continue
+
         """The data source should be repeated check for update from the data repository."""
 
         # Check total records for test connection
