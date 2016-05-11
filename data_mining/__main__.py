@@ -16,7 +16,7 @@ if __name__ == '__main__':
     while True:
         source_object = RemoteDataSource()
 
-        if source_object.total_record == 0:
+        if isinstance(source_object.total_record, str):
             time.sleep(60)
             continue
 
